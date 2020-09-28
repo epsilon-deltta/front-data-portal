@@ -22,29 +22,120 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>
 
     <!-- <script src="https://d3js.org/d3.v6.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.css" integrity="sha512-cznfNokevSG7QPA5dZepud8taylLdvgr0lDqw/FEZIhluFsSwyvS81CMnRdrNSKwbsmc43LtRd2/WMQV+Z85AQ==" crossorigin="anonymous" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.js" integrity="sha512-+IpCthlNahOuERYUSnKFjzjdKXIbJ/7Dd6xvUp+7bEw0Jp2dg6tluyxLs+zq9BMzZgrLv8886T4cBSqnKiVgUw==" crossorigin="anonymous"></script> -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.css" integrity="sha512-cznfNokevSG7QPA5dZepud8taylLdvgr0lDqw/FEZIhluFsSwyvS81CMnRdrNSKwbsmc43LtRd2/WMQV+Z85AQ==" crossorigin="anonymous" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.js" integrity="sha512-+IpCthlNahOuERYUSnKFjzjdKXIbJ/7Dd6xvUp+7bEw0Jp2dg6tluyxLs+zq9BMzZgrLv8886T4cBSqnKiVgUw==" crossorigin="anonymous"></script> -->
     <!-- 
     <script src="https://d3js.org/d3.v6.min.js"></script>    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.css" integrity="sha512-GQSxWe9Cj4o4EduO7zO9HjULmD4olIjiQqZ7VJuwBxZlkWaUFGCxRkn39jYnD2xZBtEilm0m4WBG7YEmQuMs5Q==" crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.js" integrity="sha512-11Z4MD9csmC3vH8Vd0eIPJBQu3uEHEqeznWEt3sLBCdQx3zm9mJbBcJH8WTcyGY9EXDE81BNpjE2vLosPK8cFQ==" crossorigin="anonymous"></script> -->
+    <!-- components -->
+    <link rel="stylesheet" href="./css/load.css" />
+
 </head>
 
 <body>
     <!-- javascript -->
+    <script src="./js/loading.js"></script>
+
     <h2><a href='/index.html'>Data portal</a></h2>
+    <!-- <navigation> -->
     <ul class="nav nav-tabs">
-        <li role="presentation" ><a href="./index.html">Home</a></li>
+        <li role="presentation"><a href="./index.html">Home</a></li>
         <li role="presentation" class="active"><a href="./hexamer_test.html">Hexamer_track</a></li>
-        <li role="presentation" ><a href="./spliceAI.html">SpliceAI</a></li>
+        <li role="presentation"><a href="./spliceAI.html">SpliceAI</a></li>
         <!-- <li role="presentation"><a href="#">Messages</a></li> -->
     </ul>
+    <!-- </navigation> -->
+    <!-- ===================== -->
+    <!-- ===================== -->
+    <!-- <loader> -->
+    <div class="load_div">
+        <div class='wrapper'>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+        </div>
+        <div id="load">
+            <div>G</div>
+            <div>N</div>
+            <div>I</div>
+            <div>D</div>
+            <div>A</div>
+            <div>O</div>
+            <div>L</div>
+        </div>
+    </div>
+    <!-- </loader> -->
+    <!-- ===================== -->
+    <!-- ===================== -->
+    <!-- <searchBar> -->
     <div class="input-group center-block" style="width: 60%;">
-        <input id="seq" type="text" class="form-control" placeholder="Enter Sequence" onkeypress="javascript:if(event.keyCode == 13){sendSeq()}">
+        <input id="seq" type="text" class="form-control" placeholder="Enter Sequence"
+            onkeypress="javascript:if(event.keyCode == 13){sendSeq()}">
         <span class="input-group-btn">
             <button class="btn btn-secondary" type="button" onclick="sendSeq()">Run</button>
         </span>
     </div>
+    <!-- </searchBar> -->
 
     <h5 id="seq_text"></h5>
     <img id="track_img">
@@ -55,32 +146,37 @@
     <script src=".\graph\percent.js"></script>
     <script>
         $("#seq").focus();
-        function sendSeq(){
-            var seq = $("#seq").val() ;
-            if(seq=='')
+        function sendSeq() {
+            var seq = $("#seq").val();
+            if (seq == '')
                 alert("Enter sequence first!! 😜");
-                // $("#test").text(track_data['']);
-            track_data = get_track_data(seq);
-            // alert(track_data['base64'])
-            $("#track_img").attr('src','data:image/png;base64,'+track_data['base64'])
-            
+            get_track_data(seq);
         }
-        
-        function get_track_data(seq){
-            track_data = {}
+        function get_track_data(seq) {
             $.ajax({
-                type   : "post",
-                async  : false,
-                url    : "http://143.248.23.236:1234/seq/",
-                contentType:'application/json; charset=utf-8',
+                type: "post",
+                // async  : false,
+                timeout: 7000,
+                url: "http://143.248.23.236:1234/seq/",
+                contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
-                data   : JSON.stringify({"seq" :seq }),
-                success: function(received_data){
-                    track_data = received_data;
+                data: JSON.stringify({ "seq": seq }),
+                success: function (received_data) {
+                    show_track_data(received_data);
                 },
-                error  : function(){alert("requesting to server is failed ....")}
+                error: function () {
+                    alert("requesting to server is failed ....")
+                },
+                beforeSend: function () {
+                    loading(true);
+                },
+                complete: function () {
+                    loading(false);
+                }
             });
-            return track_data
+        }
+        function show_track_data(track_data) {
+            $("#track_img").attr('src', 'data:image/png;base64,' + track_data['base64']);
         }
         var data0 = 3;
         function uploadFile() {
