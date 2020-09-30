@@ -30,6 +30,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.js" integrity="sha512-11Z4MD9csmC3vH8Vd0eIPJBQu3uEHEqeznWEt3sLBCdQx3zm9mJbBcJH8WTcyGY9EXDE81BNpjE2vLosPK8cFQ==" crossorigin="anonymous"></script> -->
     <!-- components -->
     <link rel="stylesheet" href="./css/load.css" />
+    <link rel="stylesheet" href="./css/clipboard.css" />
+
 
 </head>
 
@@ -136,9 +138,25 @@
         </span>
     </div>
     <!-- </searchBar> -->
-
-    <h5 id="seq_text"></h5>
+    <!-- <sequence_info> -->
+    <div class="panel panel-default">
+        <div class="panel-heading">Sequence
+            <button type="button" class="btn btn-default" aria-label="Right Align" onclick="javascript:copy()">
+                <span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span>
+            </button>
+        </div>
+        <div class="panel-body" id="seq_text">
+        </div>
+    </div>
+    <!-- </sequence_info> -->
+    
+    <!-- <copy_clipboard> -->
+    <input id="clip-box"/>
+    <!-- </copy_clipboard>   -->
+    
+    <!-- <track_image> -->
     <img id="track_img">
+    <!-- </track_image> -->
     <h5 id="test"></h5>
     <div id="chart"></div>
     <div id="chart0"></div>
@@ -156,7 +174,7 @@
             $.ajax({
                 type: "post",
                 // async  : false,
-                timeout: 7000,
+                timeout: 9000,
                 url: "http://143.248.23.236:1234/seq/",
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
@@ -176,7 +194,17 @@
             });
         }
         function show_track_data(track_data) {
+            $("#seq_text").text(track_data['seq']);
             $("#track_img").attr('src', 'data:image/png;base64,' + track_data['base64']);
+        }
+        // =============================================================================
+
+        function copy(){
+            var copy_str = $("#seq_text").text();
+            $("#clip-box").val(copy_str);
+            $("#clip-box").select();
+            document.execCommand( 'Copy' );
+
         }
         var data0 = 3;
         function uploadFile() {
