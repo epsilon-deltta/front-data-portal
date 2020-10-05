@@ -151,7 +151,7 @@
             $.ajax({
                 type: "post",
                 // async: false,
-                url: "http://143.248.23.236:1234/seq/",
+                url: "http://143.248.23.236:1234/seq/spliceai",
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 data: JSON.stringify({ "seq": seq }),
@@ -172,9 +172,24 @@
             });
             return track_data
         }
+        track_data;
         function show_track_data(track_data) {
-            $("#track_img").attr('src', 'data:image/png;base64,' + track_data['base64']);
-
+            // $("#track_img").attr('src', 'data:image/png;base64,' + track_data['base64']);
+            track_data = track_data;
+            console.log(track_data)
+            last = '';
+            for(var i=0; i<track_data.length; i++) {
+                $('#seq_text').text( last_text+'\n'+track_data[i]['chrN']+":"+track_data[i]['pos']+"  "+track_data[i]['ref']+">"+
+                track_data[i]['alt']+"\n       :");
+                for(x in track_data[i][5]){
+                    $('#seq_text').text(x);
+                }
+                for(x in track_data[i][6]){
+                    $('#seq_text').text(x);
+                }
+                last_text = last_text+$('#seq_text').text();
+            }
+            
         }
         var data0 = 3;
         function uploadFile() {

@@ -132,7 +132,7 @@
     <!-- ===================== -->
     <!-- <searchBar> -->
     <div class="input-group center-block" style="width: 60%;">
-        <input id="seq" type="text" class="form-control" placeholder="Enter Sequence"
+        <input id="seq" type="text" class="form-control" placeholder="Enter Sequence    ex) chr14,31549779,31549850,+ or GCACCAAAGGAGGA..."
             onkeypress="javascript:if(event.keyCode == 13){sendSeq()}">
         <span class="input-group-btn">
             <button class="btn btn-secondary" type="button" onclick="sendSeq()">Run</button>
@@ -184,7 +184,7 @@
                     show_track_data(received_data);
                 },
                 error: function () {
-                    alert("requesting to server is failed ....")
+                    alert("requesting to server is failed .... \n")
                 },
                 beforeSend: function () {
                     loading(true);
