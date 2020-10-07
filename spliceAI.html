@@ -11,6 +11,8 @@
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <!-- 합쳐지고 최소화된 최신 CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
     <!-- Load c3.css -->
     <!-- Load d3.js and c3.js -->
@@ -47,12 +49,27 @@
     </ul>
     <!-- </navigation> -->
     <div class="input-group center-block" style="width: 60%;">
-        <input id="seq" type="text" class="form-control" placeholder="Enter"
+        <input id="seq" type="text" class="form-control" placeholder="Enter ex)11:108236168-108236168 , 11:108236168 a>g, 11:108236164 GTTCA>G"
             onkeypress="javascript:if(event.keyCode == 13){sendSeq()}">
         <span class="input-group-btn">
             <button class="btn btn-secondary" type="button" onclick="sendSeq()">Run</button>
+            <div class="btn-group">
+                <button type="button" class="btn dropdown-toggle btn-primary" data-toggle="dropdown" aria-expanded="false">
+                  Examples <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                  <li ><a onclick="javascript:insert_Into_input()">11:108236168-108236168</a></li>
+                  <li><a onclick="javascript:insert_Into_input()">11:108236168</a></li>
+                  <li><a onclick="javascript:insert_Into_input()">11:108236168 a>g</a></li>
+                  <li><a onclick="javascript:insert_Into_input()">11:108236164 GTTCA>G</a></li>
+                  <li class="divider"></li>
+                  <li><a href="#">Guide</a></li>
+                </ul>
+            </div>
+            <button type="button" class="btn btn-info" onclick="cleanInput()">Clean</button>
         </span>
     </div>
+
     <!-- =============== -->
     <!-- <loading> -->
     <div class="load_div">
@@ -158,6 +175,12 @@
             }
             get_splice_data(seq);
         }
+        function insert_Into_input(){
+            $("#seq").val( $(event.target).text()  );
+        }
+        function cleanInput(){
+            $("#seq").val('');
+        }
         // 11:108236168-108236168
         function get_splice_data(seq) {
             $("#splice").empty();
@@ -193,6 +216,7 @@
             // console.log(track_data)
             for(var i=0; i<track_data.length; i++) {
                 seq_info = track_data[i]['chrN']+':'+track_data[i]['pos']+"     "+track_data[i]['ref'] + ">"+ track_data[i]['alt'] +'<br> '+
+                "GeneName : "+track_data[i]['geneName']+'<br>'+
                 "score : "+"AG :"+track_data[i]['score']['AG']+"  AL :"+track_data[i]['score']['AL']+"  DG :"+track_data[i]['score']['DG']+"  DL: "+track_data[i]['score']['DL']+'<br> '+
                 "Relpos : "+"AG :"+track_data[i]['relPos']['AG']+"  AL :"+track_data[i]['relPos']['AL']+"  DG :"+track_data[i]['relPos']['DG']+"  DL: "+track_data[i]['relPos']['DL']+'\n'
 

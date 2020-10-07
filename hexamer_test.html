@@ -11,7 +11,9 @@
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <!-- 합쳐지고 최소화된 최신 CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-
+    <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    
     <!-- Load c3.css -->
     <!-- Load d3.js and c3.js -->
     <!-- <link href="/c3-0.7.20/c3.css" rel="stylesheet">
@@ -136,6 +138,20 @@
             onkeypress="javascript:if(event.keyCode == 13){sendSeq()}">
         <span class="input-group-btn">
             <button class="btn btn-secondary" type="button" onclick="sendSeq()">Run</button>
+            <div class="btn-group">
+                <button type="button" class="btn dropdown-toggle btn-primary" data-toggle="dropdown" aria-expanded="false">
+                  Examples <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a onclick="javascript:insert_Into_input()">GCACCAAAGGAGGAAATCTGCCTGCATGATCCAATCACCTCCCATCAGGCCCCACCTCCAACATTGGGTATT</a></li>
+                  <li><a onclick="javascript:insert_Into_input()">chr14,31549779,31549850,+</a></li>
+                  <!-- <li><a href="#">11:108236168 a>g</a></li>
+                  <li><a href="#">11:108236164 GTTCA>G</a></li> -->
+                  <li class="divider"></li>
+                  <li><a href="#">Guide</a></li>
+                </ul>
+            </div>
+            <button type="button" class="btn btn-info" onclick="cleanInput()">Clean</button>
         </span>
     </div>
     <!-- </searchBar> -->
@@ -170,6 +186,12 @@
             if (seq == '')
                 alert("Enter sequence first!! 😜");
             get_track_data(seq);
+        }
+        function insert_Into_input(){
+            $("#seq").val( $(event.target).text()  );
+        }
+        function cleanInput(){
+            $("#seq").val('');
         }
         function get_track_data(seq) {
             $.ajax({
