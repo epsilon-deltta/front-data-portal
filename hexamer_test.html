@@ -148,7 +148,7 @@
                   <!-- <li><a href="#">11:108236168 a>g</a></li>
                   <li><a href="#">11:108236164 GTTCA>G</a></li> -->
                   <li class="divider"></li>
-                  <li><a href="#">Guide</a></li>
+                  <li><a onclick="openWindow()">Guide</a></li>
                 </ul>
             </div>
             <button type="button" class="btn btn-info" onclick="cleanInput()">Clean</button>
@@ -258,7 +258,9 @@
             console.log(jdata['dna'].split(''))
         }
 
-
+        function openWindow(){
+            var new_win = window.open("./tool-guide.html", "Guide", "width=500,height=600");
+        }
         // setTimeout(function () {|
         //     chart.unload({
         //         ids: 'data1'
