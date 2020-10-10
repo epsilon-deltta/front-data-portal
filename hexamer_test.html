@@ -183,8 +183,10 @@
         $("#seq").focus();
         function sendSeq() {
             var seq = $("#seq").val();
-            if (seq == '')
+            if (seq == ''){
                 alert("Enter sequence first!! 😜");
+                return null
+            }
             get_track_data(seq);
         }
         function insert_Into_input(){
