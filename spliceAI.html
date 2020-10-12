@@ -33,6 +33,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.js" integrity="sha512-11Z4MD9csmC3vH8Vd0eIPJBQu3uEHEqeznWEt3sLBCdQx3zm9mJbBcJH8WTcyGY9EXDE81BNpjE2vLosPK8cFQ==" crossorigin="anonymous"></script> -->
     <!-- components -->
     <link rel="stylesheet" href="./css/load.css" />
+    <link rel="stylesheet" href="./css/clipboard.css" />
 </head>
 
 <body>
@@ -58,10 +59,10 @@
                   Examples <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
-                  <li ><a onclick="javascript:insert_Into_input()">11:108236168-108236168</a></li>
-                  <li><a onclick="javascript:insert_Into_input()">11:108236168</a></li>
-                  <li><a onclick="javascript:insert_Into_input()">11:108236168 a>g</a></li>
-                  <li><a onclick="javascript:insert_Into_input()">11:108236164 GTTCA>G</a></li>
+                  <li ><a onclick="javascript:insert_Into_input();sendSeq()">11:108236168-108236168</a></li>
+                  <li><a onclick="javascript:insert_Into_input();sendSeq()">11:108236168</a></li>
+                  <li><a onclick="javascript:insert_Into_input();sendSeq()">11:108236168 a>g</a></li>
+                  <li><a onclick="javascript:insert_Into_input();sendSeq()">11:108236164 GTTCA>G</a></li>
                   <li class="divider"></li>
                   <li><a onclick="openWindow()">Guide</a></li>
                 </ul>
@@ -158,6 +159,9 @@
     <!-- <li class="list-group-item">Porta ac consectetur ac</li> -->
     <!-- <li class="list-group-item">Vestibulum at eros</li> -->
     </ul>
+<!-- ==========================  -->
+    <input id="clip-box"/>
+<!-- ========================= -->
 <!-- ======================================= -->
     <img id="track_img">
     <h5 id="test"></h5>
@@ -208,19 +212,62 @@
                 
             });
         }
-        
+        function get_mas_hex_data(seq) {
+            $("#splice").empty();
+            track_data = {};
+            $.ajax({
+                type: "post",
+                // async: false,
+                url: "http://143.248.23.236:1234/seq/spliceai",
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                data: JSON.stringify({ "seq": seq }),
+                timeout: 7000,
+                success: function (received_data) {
+                    show_track_data(received_data);
+                },
+                error: function () {
+                    alert("requesting to server is failed ....");
+                },
+                beforeSend: function(){
+                    loading(true);
+                },
+                complete: function(){
+                    loading(false);
+                }
+                
+            });
+        }
+        function copy(id){
+            console.log(id)
+            var copy_str = $(id).text();
+            $("#clip-box").val(copy_str);
+            $("#clip-box").select();
+            document.execCommand( 'Copy' );
+
+        }
         function show_track_data(track_data) {
             // $("#track_img").attr('src', 'data:image/png;base64,' + track_data['base64']);
             // track_data = track_data;
             // console.log(track_data)
             for(var i=0; i<track_data.length; i++) {
-                seq_info = track_data[i]['chrN']+':'+track_data[i]['pos']+"     "+track_data[i]['ref'] + ">"+ track_data[i]['alt'] +'<br> '+
-                "GeneName : "+track_data[i]['geneName']+'<br>'+
+                nt_info = track_data[i]['chrN']+':'+track_data[i]['pos']+" "+track_data[i]['ref'] + ">"+ track_data[i]['alt'] ;
+                
+                splice_info = 
+                "GeneName : "+track_data[i]['geneName']+'<br>'+ 
                 "score : "+"AG :"+track_data[i]['score']['AG']+"  AL :"+track_data[i]['score']['AL']+"  DG :"+track_data[i]['score']['DG']+"  DL: "+track_data[i]['score']['DL']+'<br> '+
-                "Relpos : "+"AG :"+track_data[i]['relPos']['AG']+"  AL :"+track_data[i]['relPos']['AL']+"  DG :"+track_data[i]['relPos']['DG']+"  DL: "+track_data[i]['relPos']['DL']+'\n'
-
-                $("#splice").append("<li class='list-group-item'>"+seq_info+"</li>");
-            }
+                "Relpos : "+"AG :"+track_data[i]['relPos']['AG']+"  AL :"+track_data[i]['relPos']['AL']+"  DG :"+track_data[i]['relPos']['DG']+"  DL: "+track_data[i]['relPos']['DL']+'\n' ;
+                
+                $("#splice") .append("<li id='"+i+"nt' class='list-group-item'>"+nt_info+"</li>");
+                $("#"+i+"nt").append("<button type='button' class='btn btn-success btn-sm max_scan' >Maxent_Scan</button>");
+                // $("#"+i+"nt").append("<button id='"+i+"cp' class='copy_nt' type='button' class='btn btn-default ' ><span class='glyphicon glyphicon-paperclip' aria-hidden='true'></span></button>");
+                // $("#"+i+"cp").click(function(){copy(i+"nt") });
+                $("#splice") .append("<li class='list-group-item'>"+splice_info+"</li>");
+            };
+            // $('.copy_nt').click()
+            $(".max_scan").click(function(event){
+                alert(event.tag );
+            });
             
         }
         var data0 = 3;
