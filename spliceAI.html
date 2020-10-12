@@ -212,19 +212,19 @@
                 
             });
         }
-        function get_mas_hex_data(seq) {
-            $("#splice").empty();
-            track_data = {};
+        function get_mas_hex_data(seq,tag) {
+            // $("#splice").empty();
+            // track_data = {};
             $.ajax({
                 type: "post",
                 // async: false,
-                url: "http://143.248.23.236:1234/seq/spliceai",
+                url: "http://143.248.23.236:1234/seq/hex_mas",
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 data: JSON.stringify({ "seq": seq }),
-                timeout: 7000,
+                timeout: 8000,
                 success: function (received_data) {
-                    show_track_data(received_data);
+                    show_hex_mas_data(received_data,tag);
                 },
                 error: function () {
                     alert("requesting to server is failed ....");
@@ -237,6 +237,41 @@
                 }
                 
             });
+        }
+        function show_hex_mas_data(hex_mas,tag){
+            for(var i=0;i < hex_mas['count'] ;i++){
+
+                nt_info = hex_mas[i]['transName']+' '+hex_mas[i]['strand']+'  :'+hex_mas[i]['type']+'\n';
+                if(hex_mas[i]['type'] == 'snv'){
+                    mas = hex_mas[i]['mes'];
+                    nt_donor    = "donor "+'<br>'+
+                                  'delta : '+ mas['donor']['delta']+ '<br>'+
+                                  'final : '+ mas['donor']['final']+ '<br>' ;
+                    nt_acceptor ="acceptor "+'<br>'+
+                                  'delta : '+ mas['acceptor']['delta']+ '<br>'+
+                                  'final : '+ mas['acceptor']['final']+ '<br>' ;
+                    nt_mas = nt_donor +nt_acceptor;
+                }else{
+                    
+                    mas = hex_mas[i]['mes']
+                    nt_donor    = "donor "+'<br>'+
+                                  'delta : '+ mas['donor']['ref']+ '<br>'+
+                                  'final : '+ mas['donor']['alt']+ '<br>';
+                    nt_acceptor ="acceptor "+'<br>'+
+                                  'delta : '+ mas['acceptor']['ref']+ '<br>'+
+                                  'final : '+ mas['acceptor']['alt']+ '<br>';
+                    nt_mas = nt_donor +nt_acceptor;
+                    
+                }
+                nt_total = nt_info     +'<br>'+
+                           nt_mas    +'<br>';
+                $(tag).parent().append("<li class='list-group-item'>"+nt_total+"</li>");
+                // console.log($(tag).parent());
+            }
+                       
+            // alert(mas_total);
+            
+            
         }
         function copy(id){
             console.log(id)
@@ -258,19 +293,30 @@
                 "score : "+"AG :"+track_data[i]['score']['AG']+"  AL :"+track_data[i]['score']['AL']+"  DG :"+track_data[i]['score']['DG']+"  DL: "+track_data[i]['score']['DL']+'<br> '+
                 "Relpos : "+"AG :"+track_data[i]['relPos']['AG']+"  AL :"+track_data[i]['relPos']['AL']+"  DG :"+track_data[i]['relPos']['DG']+"  DL: "+track_data[i]['relPos']['DL']+'\n' ;
                 
-                $("#splice") .append("<li id='"+i+"nt' class='list-group-item'>"+nt_info+"</li>");
+                $("#splice") .append("<li id='"+i+"nt' class='list-group-item'><span id='"+i+"nt_info'>"+nt_info+"</span></li>");
                 $("#"+i+"nt").append("<button type='button' class='btn btn-success btn-sm max_scan' >Maxent_Scan</button>");
                 // $("#"+i+"nt").append("<button id='"+i+"cp' class='copy_nt' type='button' class='btn btn-default ' ><span class='glyphicon glyphicon-paperclip' aria-hidden='true'></span></button>");
                 // $("#"+i+"cp").click(function(){copy(i+"nt") });
                 $("#splice") .append("<li class='list-group-item'>"+splice_info+"</li>");
             };
             // $('.copy_nt').click()
-            $(".max_scan").click(function(event){
-                alert(event.tag );
+            $(".max_scan").on("click",function(event){
+                var btn_str = $(event.target).text();
+                var nt_str  = $(event.target).parent().find("span").text();
+                get_mas_hex_data(nt_str,event.target);
             });
             
         }
-        var data0 = 3;
+
+        function jsonProcessor(jdata) {
+            console.log(jdata['a']);
+            console.log(jdata['g']);
+            console.log(jdata['dna'].split(''))
+        }
+
+        function openWindow(){
+            var new_win = window.open("./tool-guide.html", "Guide", "width=500,height=600");
+        }
         function uploadFile() {
             var form = $('#FILE_FORM')[0];
             var formData = new FormData();
@@ -292,15 +338,6 @@
             showPie(result);
             showDonut(result);
             showGuage(result);
-        }
-        function jsonProcessor(jdata) {
-            console.log(jdata['a']);
-            console.log(jdata['g']);
-            console.log(jdata['dna'].split(''))
-        }
-
-        function openWindow(){
-            var new_win = window.open("./tool-guide.html", "Guide", "width=500,height=600");
         }
         // setTimeout(function () {|
         //     chart.unload({
