@@ -171,6 +171,9 @@
     <script src=".\graph\percent.js"></script>
     <script>
         $("#seq").focus();
+        function insert_Into_input(){
+            $("#seq").val( $(event.target).text()  );
+        }
         function sendSeq() {
             var seq = $("#seq").val();
             if (seq == '') {
@@ -179,12 +182,8 @@
             }
             get_splice_data(seq);
         }
-        function insert_Into_input(){
-            $("#seq").val( $(event.target).text()  );
-        }
-        function cleanInput(){
-            $("#seq").val('');
-        }
+ 
+
         // 11:108236168-108236168
         function get_splice_data(seq) {
             $("#splice").empty();
@@ -238,6 +237,7 @@
                 
             });
         }
+
         function show_hex_mas_data(hex_mas,tag){
             for(var i=0;i < hex_mas['count'] ;i++){
 
@@ -255,11 +255,11 @@
                     
                     mas = hex_mas[i]['mes']
                     nt_donor    = "donor "+'<br>'+
-                                  'delta : '+ mas['donor']['ref']+ '<br>'+
-                                  'final : '+ mas['donor']['alt']+ '<br>';
+                                  'ref : '+ mas['donor']['ref']+ '<br>'+
+                                  'alt : '+ mas['donor']['alt']+ '<br>';
                     nt_acceptor ="acceptor "+'<br>'+
-                                  'delta : '+ mas['acceptor']['ref']+ '<br>'+
-                                  'final : '+ mas['acceptor']['alt']+ '<br>';
+                                  'ref : '+ mas['acceptor']['ref']+ '<br>'+
+                                  'alt : '+ mas['acceptor']['alt']+ '<br>';
                     nt_mas = nt_donor +nt_acceptor;
                     
                 }
@@ -272,14 +272,6 @@
             // alert(mas_total);
             
             
-        }
-        function copy(id){
-            console.log(id)
-            var copy_str = $(id).text();
-            $("#clip-box").val(copy_str);
-            $("#clip-box").select();
-            document.execCommand( 'Copy' );
-
         }
         function show_track_data(track_data) {
             // $("#track_img").attr('src', 'data:image/png;base64,' + track_data['base64']);
@@ -308,12 +300,16 @@
             
         }
 
+
+
         function jsonProcessor(jdata) {
             console.log(jdata['a']);
             console.log(jdata['g']);
             console.log(jdata['dna'].split(''))
         }
-
+        function cleanInput(){
+            $("#seq").val('');
+        }
         function openWindow(){
             var new_win = window.open("./tool-guide.html", "Guide", "width=500,height=600");
         }
@@ -338,6 +334,13 @@
             showPie(result);
             showDonut(result);
             showGuage(result);
+        }
+        function copy(id){
+            var copy_str = $(id).text();
+            $("#clip-box").val(copy_str);
+            $("#clip-box").select();
+            document.execCommand( 'Copy' );
+
         }
         // setTimeout(function () {|
         //     chart.unload({
