@@ -241,30 +241,39 @@
         function show_hex_mas_data(hex_mas,tag){
             for(var i=0;i < hex_mas['count'] ;i++){
 
-                nt_info = hex_mas[i]['transName']+' '+hex_mas[i]['strand']+'  :'+hex_mas[i]['type']+'\n';
+                nt_info    = hex_mas[i]['transName']+' '+hex_mas[i]['strand']+'  :'+hex_mas[i]['type']+'\n' ;
+                
+                hex_info   = "Hexamer Info" ;
+
+                hex        = hex_mas[i]['hexamer'] ;
+                hex_exon   = "5p_exon :"  + hex['5p_exon']   +" 3p_exon : "  + hex['3p_exon']   ;
+                hex_intron = "5p_intron :"+ hex['5p_intron'] +" 3p_intron : "+ hex['3p_intron'] ;
+                hex_info   = hex_info +"<br>" +  hex_exon +"<br>" + hex_intron
+
+                mas_info    = "<h4>Maximum Entropy Scan (MaxEntScan)</h4>";
+                mas = hex_mas[i]['mes'];
                 if(hex_mas[i]['type'] == 'snv'){
-                    mas = hex_mas[i]['mes'];
-                    nt_donor    = "donor "+'<br>'+
+                    nt_donor    = "donor "  +'<br>'+
                                   'delta : '+ mas['donor']['delta']+ '<br>'+
-                                  'final : '+ mas['donor']['final']+ '<br>' ;
+                                  'final : '+ mas['donor']['final'] ;
                     nt_acceptor ="acceptor "+'<br>'+
                                   'delta : '+ mas['acceptor']['delta']+ '<br>'+
-                                  'final : '+ mas['acceptor']['final']+ '<br>' ;
-                    nt_mas = nt_donor +nt_acceptor;
+                                  'final : '+ mas['acceptor']['final'] ;
                 }else{
-                    
-                    mas = hex_mas[i]['mes']
                     nt_donor    = "donor "+'<br>'+
                                   'ref : '+ mas['donor']['ref']+ '<br>'+
-                                  'alt : '+ mas['donor']['alt']+ '<br>';
+                                  'alt : '+ mas['donor']['alt'];
                     nt_acceptor ="acceptor "+'<br>'+
                                   'ref : '+ mas['acceptor']['ref']+ '<br>'+
-                                  'alt : '+ mas['acceptor']['alt']+ '<br>';
-                    nt_mas = nt_donor +nt_acceptor;
-                    
+                                  'alt : '+ mas['acceptor']['alt'] ;
                 }
-                nt_total = nt_info     +'<br>'+
-                           nt_mas    +'<br>';
+                nt_mas      = nt_donor + '<br>' + nt_acceptor  ;
+                mas_info    = mas_info + nt_mas       ;
+
+                nt_total = 
+                           nt_info   +'<br>'+
+                           hex_info  +'<br>'+ 
+                           mas_info    +'<br>'  ;
                 $(tag).parent().append("<li class='list-group-item'>"+nt_total+"</li>");
                 // console.log($(tag).parent());
             }
