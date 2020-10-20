@@ -41,6 +41,7 @@
 <body>
     <!-- javascript -->
     <script src="./js/loading.js"></script>
+    <script src="./test_deploy.js"></script>
 
     <h2><a href='/index.html'>Data portal</a></h2>
     <!-- <navigation> -->
@@ -204,7 +205,7 @@
                 type: "post",
                 // async  : false,
                 timeout: 9000,
-                url: "http://143.248.23.236:1234/seq/",
+                url: "http://"+server_ip+":"+back_port+"/seq/",
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 data: JSON.stringify({ "seq": seq }),
