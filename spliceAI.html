@@ -24,13 +24,6 @@
     <script src="https://d3js.org/d3.v3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>
     
-    <!-- <script src="https://d3js.org/d3.v6.min.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.css" integrity="sha512-cznfNokevSG7QPA5dZepud8taylLdvgr0lDqw/FEZIhluFsSwyvS81CMnRdrNSKwbsmc43LtRd2/WMQV+Z85AQ==" crossorigin="anonymous" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.js" integrity="sha512-+IpCthlNahOuERYUSnKFjzjdKXIbJ/7Dd6xvUp+7bEw0Jp2dg6tluyxLs+zq9BMzZgrLv8886T4cBSqnKiVgUw==" crossorigin="anonymous"></script> -->
-        <!-- 
-            <script src="https://d3js.org/d3.v6.min.js"></script>    
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.css" integrity="sha512-GQSxWe9Cj4o4EduO7zO9HjULmD4olIjiQqZ7VJuwBxZlkWaUFGCxRkn39jYnD2xZBtEilm0m4WBG7YEmQuMs5Q==" crossorigin="anonymous" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.js" integrity="sha512-11Z4MD9csmC3vH8Vd0eIPJBQu3uEHEqeznWEt3sLBCdQx3zm9mJbBcJH8WTcyGY9EXDE81BNpjE2vLosPK8cFQ==" crossorigin="anonymous"></script> -->
     <!-- components -->
     <link rel="stylesheet" href="./css/load.css" />
     <link rel="stylesheet" href="./css/clipboard.css" />
@@ -39,7 +32,7 @@
 <body>
     <!-- javascript -->
     <script src="./js/loading.js"></script>
-
+    <script src="./test_deploy.js"></script>
     <h2><a href='/index.html'>Data portal</a></h2>
     <!-- <navigation> -->
     <ul class="nav nav-tabs">
@@ -191,7 +184,7 @@
             $.ajax({
                 type: "post",
                 // async: false,
-                url: "http://143.248.23.236:1234/seq/spliceai",
+                url: "http://"+server_ip+":"+back_port+"/seq/spliceai",
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 data: JSON.stringify({ "seq": seq }),
@@ -217,7 +210,7 @@
             $.ajax({
                 type: "post",
                 // async: false,
-                url: "http://143.248.23.236:1234/seq/hex_mas",
+                url: "http://"+server_ip+":"+back_port+"/seq/hex_mas",
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 data: JSON.stringify({ "seq": seq }),
