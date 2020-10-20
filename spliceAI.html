@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="img/dna2.png">
     <title>Data portal</title>
+ 
     <!-- security-policy -->
     <!-- <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> -->
     <!-- jquery -->
@@ -13,17 +14,20 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-
+ 
+    <!--conflict with jquery -->
+    <!-- <link rel="stylesheet" href="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.css"/> 
+    <script src="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.js"></script> -->
     <!-- Load c3.css -->
     <!-- Load d3.js and c3.js -->
     <!-- <link href="/c3-0.7.20/c3.css" rel="stylesheet">
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script src="/c3-0.7.20/c3.min.js"></script> -->
+    <!-- dataTables -->
+
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.css" />
-    <script src="https://d3js.org/d3.v3.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>
-    
+
     <!-- components -->
     <link rel="stylesheet" href="./css/load.css" />
     <link rel="stylesheet" href="./css/clipboard.css" />
@@ -43,23 +47,25 @@
     </ul>
     <!-- </navigation> -->
     <div class="input-group center-block" style="width: 60%;">
-        <input id="seq" type="text" class="form-control" placeholder="Enter ex)11:108236168-108236168 , 11:108236168 a>g, 11:108236164 GTTCA>G"
+        <input id="seq" type="text" class="form-control"
+            placeholder="Enter ex)11:108236168-108236168 , 11:108236168 a>g, 11:108236164 GTTCA>G"
             onkeypress="javascript:if(event.keyCode == 13){sendSeq()}">
         <span class="input-group-btn">
             <button class="btn btn-secondary" type="button" onclick="sendSeq()">Run</button>
             <div class="btn-group">
-                <button type="button" class="btn dropdown-toggle btn-primary" data-toggle="dropdown" aria-expanded="false">
-                  Examples <span class="caret"></span>
+                <button type="button" class="btn dropdown-toggle btn-primary" data-toggle="dropdown"
+                    aria-expanded="false">
+                    Examples <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
-                  <li ><a onclick="javascript:insert_Into_input();sendSeq()">11:108236168-108236168</a></li>
-                  <li><a onclick="javascript:insert_Into_input();sendSeq()">11:108236168</a></li>
-                  <li><a onclick="javascript:insert_Into_input();sendSeq()">11:108236168 a>g</a></li>
-                  <li><a onclick="javascript:insert_Into_input();sendSeq()">11:108236164 GTTCA>G</a></li>
-                  <li><a onclick="javascript:insert_Into_input();sendSeq()">NM_000552:3797</a></li>
-                  <li><a onclick="javascript:insert_Into_input();sendSeq()">NM_000552.4(VWF):c.3797T>A</a></li>
-                  <li class="divider"></li>
-                  <li><a onclick="openWindow()">Guide</a></li>
+                    <li><a onclick="javascript:insert_Into_input();sendSeq()">11:108236168-108236168</a></li>
+                    <li><a onclick="javascript:insert_Into_input();sendSeq()">11:108236168</a></li>
+                    <li><a onclick="javascript:insert_Into_input();sendSeq()">11:108236168 a>g</a></li>
+                    <li><a onclick="javascript:insert_Into_input();sendSeq()">11:108236164 GTTCA>G</a></li>
+                    <li><a onclick="javascript:insert_Into_input();sendSeq()">NM_000552:3797</a></li>
+                    <li><a onclick="javascript:insert_Into_input();sendSeq()">NM_000552.4(VWF):c.3797T>A</a></li>
+                    <li class="divider"></li>
+                    <li><a onclick="openWindow()">Guide</a></li>
                 </ul>
             </div>
             <button type="button" class="btn btn-info" onclick="cleanInput()">Clean</button>
@@ -146,29 +152,29 @@
     <!-- </loading>   -->
     <!-- ============== -->
     <h5 id="seq_text"></h5>
-<!-- ======================================= -->
+    <!-- ======================================= -->
     <ul id="splice" class="list-group">
-    <!-- <li class="list-group-item">Cras justo odio</li> -->
-    <!-- <li class="list-group-item">Dapibus ac facilisis in</li> -->
-    <!-- <li class="list-group-item">Morbi leo risus</li> -->
-    <!-- <li class="list-group-item">Porta ac consectetur ac</li> -->
-    <!-- <li class="list-group-item">Vestibulum at eros</li> -->
+        <!-- <li class="list-group-item">Cras justo odio</li> -->
+        <!-- <li class="list-group-item">Dapibus ac facilisis in</li> -->
+        <!-- <li class="list-group-item">Morbi leo risus</li> -->
+        <!-- <li class="list-group-item">Porta ac consectetur ac</li> -->
+        <!-- <li class="list-group-item">Vestibulum at eros</li> -->
     </ul>
-<!-- ==========================  -->
-    <input id="clip-box"/>
-<!-- ========================= -->
-<!-- ======================================= -->
+    <!-- ==========================  -->
+    <input id="clip-box" />
+    <!-- ========================= -->
+    <!-- ======================================= -->
     <img id="track_img">
     <h5 id="test"></h5>
     <div id="chart"></div>
     <div id="chart0"></div>
     <div id="chart1"></div>
-    
+
     <script src=".\graph\percent.js"></script>
     <script>
         $("#seq").focus();
-        function insert_Into_input(){
-            $("#seq").val( $(event.target).text()  );
+        function insert_Into_input() {
+            $("#seq").val($(event.target).text());
         }
         function sendSeq() {
             var seq = $("#seq").val();
@@ -178,7 +184,7 @@
             }
             get_splice_data(seq);
         }
- 
+
 
         // 11:108236168-108236168
         function get_splice_data(seq) {
@@ -187,196 +193,215 @@
             $.ajax({
                 type: "post",
                 // async: false,
-                url: "http://"+server_ip+":"+back_port+"/seq/spliceai",
+                url: "http://" + server_ip + ":" + back_port + "/seq/spliceai",
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 data: JSON.stringify({ "seq": seq }),
                 timeout: 7000,
                 success: function (received_data) {
-                    show_track_data(received_data);
+                    show_splice_data(received_data);
                 },
                 error: function () {
                     alert("requesting to server is failed ....");
                 },
-                beforeSend: function(){
+                beforeSend: function () {
                     loading(true);
                 },
-                complete: function(){
+                complete: function () {
                     loading(false);
                 }
-                
+
             });
         }
-        function get_mas_hex_data(seq,tag) {
+        function get_mas_hex_data(seq, tag) {
             // $("#splice").empty();
             // track_data = {};
             $.ajax({
                 type: "post",
                 // async: false,
-                url: "http://"+server_ip+":"+back_port+"/seq/hex_mas",
+                url: "http://" + server_ip + ":" + back_port + "/seq/hex_mas",
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 data: JSON.stringify({ "seq": seq }),
                 timeout: 8000,
                 success: function (received_data) {
-                    show_hex_mas_data(received_data,tag);
+                    show_hex_mas_data(received_data, tag);
                 },
                 error: function () {
                     alert("requesting to server is failed ....");
                 },
-                beforeSend: function(){
+                beforeSend: function () {
                     loading(true);
                 },
-                complete: function(){
+                complete: function () {
                     loading(false);
                 }
-                
+
             });
         }
         var vep;
         // { "variants" : ["21  26960070  rs116645811 G A . . .", "21  26965148  rs1135638 G A . . ." ] }
-        function get_vep_data(seq,tag) {
+        function get_vep_data(seq, tag) {
             // $("#splice").empty();
             // track_data = {};
-            server = "https://rest.ensembl.org" ;
-            ext    = "/vep/homo_sapiens/region" ;
+            server = "https://rest.ensembl.org";
+            ext = "/vep/homo_sapiens/region";
             $.ajax({
                 type: "post",
                 // async: false,
-                url: server+ext,
+                url: server + ext,
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
-                data: JSON.stringify({ "variants" : ["21  26960070  rs116645811 G A . . .", "21  26965148  rs1135638 G A . . ." ] }),
+                data: JSON.stringify({ "variants": ["21  26960070  rs116645811 G A . . .", "21  26965148  rs1135638 G A . . ."] }),
                 timeout: 8000,
                 success: function (received_data) {
                     console.log(received_data);
-                    vep =received_data;
+                    vep = received_data;
                     // show_vep_data(received_data,tag);
                     // show_hex_mas_data(received_data,tag);
                 },
                 error: function () {
                     alert("requesting to server is failed ....");
                 },
-                beforeSend: function(){
+                beforeSend: function () {
                     loading(true);
                 },
-                complete: function(){
+                complete: function () {
                     loading(false);
                 }
-                
+
             });
         }
 
-
-
-        function show_track_data(track_data) {
+        // 
+        // #output :[ {'chrN': '11', 'pos': 108236168, 'ref': 'AGTAG', 'alt': 'A', 'geneName': 'ATM', 'score': {'AG': 0.0, 'AL': 0.0, 'DG': 0.02, 'DL': 0.09}, 'relPos': {'AG': 49, 'AL': 0, 'DG': -48, 'DL': 0}},..]
+        function show_splice_data(track_data) {
             // $("#track_img").attr('src', 'data:image/png;base64,' + track_data['base64']);
             // track_data = track_data;
             // console.log(track_data)
-            for(var i=0; i<track_data.length; i++) {
-                nt_info = track_data[i]['chrN']+':'+track_data[i]['pos']+" "+track_data[i]['ref'] + ">"+ track_data[i]['alt'] ;
-                
-                splice_info = 
-                "GeneName : "+track_data[i]['geneName']+'<br>'+ 
-                "score : "+"AG :"+track_data[i]['score']['AG']+"  AL :"+track_data[i]['score']['AL']+"  DG :"+track_data[i]['score']['DG']+"  DL: "+track_data[i]['score']['DL']+'<br> '+
-                "Relpos : "+"AG :"+track_data[i]['relPos']['AG']+"  AL :"+track_data[i]['relPos']['AL']+"  DG :"+track_data[i]['relPos']['DG']+"  DL: "+track_data[i]['relPos']['DL']+'\n' ;
-                
-                $("#splice") .append("<li id='"+i+"nt' class='list-group-item'><span id='"+i+"nt_info'>"+nt_info+"</span></li>");
-                $("#"+i+"nt").append("<button type='button' class='btn btn-success btn-sm max_scan' >Maxent_Scan</button>");
-                $("#"+i+"nt").append("<button type='button' class='btn btn-primary btn-sm vep' >VEP</button>");
-                $("#"+i+"nt").append("<button type='button' class='btn btn-danger btn-sm ucsc' >Go to UCSC</button>");
+            for (var i = 0; i < track_data.length; i++) {
+                nt_info = track_data[i]['chrN'] + ':' + track_data[i]['pos'] + " " + track_data[i]['ref'] + ">" + track_data[i]['alt'];
+
+                splice_info =
+                    "GeneName : " + track_data[i]['geneName'] + '<br>' +
+                    "score : " + "AG :" + track_data[i]['score']['AG'] + "  AL :" + track_data[i]['score']['AL'] + "  DG :" + track_data[i]['score']['DG'] + "  DL: " + track_data[i]['score']['DL'] + '<br> ' +
+                    "Relpos : " + "AG :" + track_data[i]['relPos']['AG'] + "  AL :" + track_data[i]['relPos']['AL'] + "  DG :" + track_data[i]['relPos']['DG'] + "  DL: " + track_data[i]['relPos']['DL'] + '\n';
+
+
+
+                // nt_info : 11:12345678 A>G
+                $("#splice").append("<li id='" + i + "nt' class='list-group-item'><span id='" + i + "nt_info'>" + nt_info + "</span></li>");
+                // button_registration
+                $("#" + i + "nt").append("<button type='button' class='btn btn-success btn-sm max_scan' >Maxent_Scan</button>");
+                $("#" + i + "nt").append("<button type='button' class='btn btn-primary btn-sm vep' >VEP</button>");
+                $("#" + i + "nt").append("<button type='button' class='btn btn-danger btn-sm ucsc' >Go to UCSC</button>");
+                $("#" + i + "nt").append("<button type='button' class='btn btn-warning btn-sm gene' value="+track_data[i]['geneName']+">About Gene</button>");
+                // splice_info table
+
+                // splice info
+                $("#splice").append("<li class='list-group-item'>" + splice_info + "</li>");
+                // copy function
                 // $("#"+i+"nt").append("<button id='"+i+"cp' class='copy_nt' type='button' class='btn btn-default ' ><span class='glyphicon glyphicon-paperclip' aria-hidden='true'></span></button>");
                 // $("#"+i+"cp").click(function(){copy(i+"nt") });
-                $("#splice") .append("<li class='list-group-item'>"+splice_info+"</li>");
             };
             // $('.copy_nt').click()
-            $(".max_scan").on("click",function(event){
+            $(".max_scan").on("click", function (event) {
                 var btn_str = $(event.target).text();
-                var nt_str  = $(event.target).parent().find("span").text();
-                get_mas_hex_data(nt_str,event.target);
+                var nt_str = $(event.target).parent().find("span").text();
+                get_mas_hex_data(nt_str, event.target);
             });
-            $(".vep").on("click",function(event){
+            $(".vep").on("click", function (event) {
                 var btn_str = $(event.target).text();
-                var nt_str  = $(event.target).parent().find("span").text();
-                get_vep_data(nt_str,event.target);
+                var nt_str = $(event.target).parent().find("span").text();
+                get_vep_data(nt_str, event.target);
             });
-            $(".ucsc").on("click",function(event){
+            $(".ucsc").on("click", function (event) {
                 var btn_str = $(event.target).text();
-                var nt_str  = $(event.target).parent().find("span").text();
+                var nt_str = $(event.target).parent().find("span").text();
                 console.log(nt_str);
                 position = nt_str.split(' ')[0];
                 console.log(position)
-                window.open('https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&lastVirtModeType=default&lastVirtModeExtraState=&virtModeType=default&virtMode=0&nonVirtPosition=&position='+position,"ucsc")
+                window.open('https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&lastVirtModeType=default&lastVirtModeExtraState=&virtModeType=default&virtMode=0&nonVirtPosition=&position=' + position, "ucsc")
                 // get_mas_hex_data(nt_str,event.target);
             });
-            
+            $(".gene").on("click", function (event) {
+                var btn_str = $(event.target).text();
+                var nt_str = $(event.target).parent().find("span").text();
+                console.log(nt_str);
+                position = nt_str.split(' ')[0];
+                console.log(position)
+                var gene = $(event.target).val();
+                window.open('https://www.genecards.org/cgi-bin/carddisp.pl?gene=' + gene, "ucsc")
+                // get_mas_hex_data(nt_str,event.target);
+            });
+
         }
-        function show_hex_mas_data(hex_mas,tag){
-            for(var i=0;i < hex_mas['count'] ;i++){
+        function show_hex_mas_data(hex_mas, tag) {
+            for (var i = 0; i < hex_mas['count']; i++) {
 
-                nt_info    = hex_mas[i]['transName']+' '+hex_mas[i]['strand']+'  :'+hex_mas[i]['type']+'\n' ;
-                
-                hex_info   = "Hexamer Info" ;
+                nt_info = hex_mas[i]['transName'] + ' ' + hex_mas[i]['strand'] + '  :' + hex_mas[i]['type'] + '\n';
 
-                hex        = hex_mas[i]['hexamer'] ;
-                hex_exon   = "5p_exon :"  + hex['5p_exon']   +" 3p_exon : "  + hex['3p_exon']   ;
-                hex_intron = "5p_intron :"+ hex['5p_intron'] +" 3p_intron : "+ hex['3p_intron'] ;
-                hex_info   = hex_info +"<br>" +  hex_exon +"<br>" + hex_intron
+                hex_info = "Hexamer Info";
 
-                mas_info    = "<h4>Maximum Entropy Scan (MaxEntScan)</h4>";
+                hex = hex_mas[i]['hexamer'];
+                hex_exon = "5p_exon :" + hex['5p_exon'] + " 3p_exon : " + hex['3p_exon'];
+                hex_intron = "5p_intron :" + hex['5p_intron'] + " 3p_intron : " + hex['3p_intron'];
+                hex_info = hex_info + "<br>" + hex_exon + "<br>" + hex_intron
+
+                mas_info = "<h4>Maximum Entropy Scan (MaxEntScan)</h4>";
                 mas = hex_mas[i]['mes'];
-                if(hex_mas[i]['type'] == 'snv'){
-                    nt_donor    = "donor "  +'<br>'+
-                                  'delta : '+ mas['donor']['delta']+ '<br>'+
-                                  'final : '+ mas['donor']['final'] ;
-                    nt_acceptor ="acceptor "+'<br>'+
-                                  'delta : '+ mas['acceptor']['delta']+ '<br>'+
-                                  'final : '+ mas['acceptor']['final'] ;
-                }else{
-                    nt_donor    = "donor "+'<br>'+
-                                  'ref : '+ mas['donor']['ref']+ '<br>'+
-                                  'alt : '+ mas['donor']['alt'];
-                    nt_acceptor ="acceptor "+'<br>'+
-                                  'ref : '+ mas['acceptor']['ref']+ '<br>'+
-                                  'alt : '+ mas['acceptor']['alt'] ;
+                if (hex_mas[i]['type'] == 'snv') {
+                    nt_donor = "donor " + '<br>' +
+                        'delta : ' + mas['donor']['delta'] + '<br>' +
+                        'final : ' + mas['donor']['final'];
+                    nt_acceptor = "acceptor " + '<br>' +
+                        'delta : ' + mas['acceptor']['delta'] + '<br>' +
+                        'final : ' + mas['acceptor']['final'];
+                } else {
+                    nt_donor = "donor " + '<br>' +
+                        'ref : ' + mas['donor']['ref'] + '<br>' +
+                        'alt : ' + mas['donor']['alt'];
+                    nt_acceptor = "acceptor " + '<br>' +
+                        'ref : ' + mas['acceptor']['ref'] + '<br>' +
+                        'alt : ' + mas['acceptor']['alt'];
                 }
-                nt_mas      = nt_donor + '<br>' + nt_acceptor  ;
-                mas_info    = mas_info + nt_mas       ;
+                nt_mas = nt_donor + '<br>' + nt_acceptor;
+                mas_info = mas_info + nt_mas;
 
-                nt_total = 
-                           nt_info   +'<br>'+
-                           hex_info  +'<br>'+ 
-                           mas_info    +'<br>'  ;
-                $(tag).parent().append("<li class='list-group-item'>"+nt_total+"</li>");
+                nt_total =
+                    nt_info + '<br>' +
+                    hex_info + '<br>' +
+                    mas_info + '<br>';
+                $(tag).parent().append("<li class='list-group-item'>" + nt_total + "</li>");
                 // console.log($(tag).parent());
             }
-                       
+
             // alert(mas_total);
-            
-            
+
+
         }
-        function show_vep_data(vep,tag){
-            show_data(vap,tag);
+        function show_vep_data(vep, tag) {
+            show_data(vap, tag);
         }
         // $emsp;
-        function show_data(data,tag){
-            // []
-            var data_str;
-            if data instanceof Array{
-                for (let i = 0; i < array.length; i++) {
-                    
-                    data[i];
-                    
-                }
-            } // true
-            // {}
-            if data instanceof Object{
+        // function show_data(data,tag){
+        //     // []
+        //     var data_str;
+        //     if data instanceof Array{
+        //         for (let i = 0; i < array.length; i++) {
 
-            }
-            // string ,int
-            return data 
+        //             data[i];
 
-        }
+        //         }
+        //     } // true
+        //     // {}
+        //     if data instanceof Object{
+
+        //     }
+        //     // string ,int
+        //     return data 
+
+        // }
 
 
         function jsonProcessor(jdata) {
@@ -384,10 +409,10 @@
             console.log(jdata['g']);
             console.log(jdata['dna'].split(''))
         }
-        function cleanInput(){
+        function cleanInput() {
             $("#seq").val('');
         }
-        function openWindow(){
+        function openWindow() {
             var new_win = window.open("./tool-guide.html", "Guide", "width=500,height=600");
         }
         function uploadFile() {
@@ -412,11 +437,11 @@
             showDonut(result);
             showGuage(result);
         }
-        function copy(id){
+        function copy(id) {
             var copy_str = $(id).text();
             $("#clip-box").val(copy_str);
             $("#clip-box").select();
-            document.execCommand( 'Copy' );
+            document.execCommand('Copy');
 
         }
         // setTimeout(function () {|
