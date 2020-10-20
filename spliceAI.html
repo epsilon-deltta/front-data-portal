@@ -63,6 +63,8 @@
                   <li><a onclick="javascript:insert_Into_input();sendSeq()">11:108236168</a></li>
                   <li><a onclick="javascript:insert_Into_input();sendSeq()">11:108236168 a>g</a></li>
                   <li><a onclick="javascript:insert_Into_input();sendSeq()">11:108236164 GTTCA>G</a></li>
+                  <li><a onclick="javascript:insert_Into_input();sendSeq()">NM_000552:3797</a></li>
+                  <li><a onclick="javascript:insert_Into_input();sendSeq()">NM_000552.4(VWF):c.3797T>A</a></li>
                   <li class="divider"></li>
                   <li><a onclick="openWindow()">Guide</a></li>
                 </ul>
@@ -168,6 +170,7 @@
     <div id="chart"></div>
     <div id="chart0"></div>
     <div id="chart1"></div>
+    
     <script src=".\graph\percent.js"></script>
     <script>
         $("#seq").focus();
@@ -237,7 +240,84 @@
                 
             });
         }
+        var vep;
+        // { "variants" : ["21  26960070  rs116645811 G A . . .", "21  26965148  rs1135638 G A . . ." ] }
+        function get_vep_data(seq,tag) {
+            // $("#splice").empty();
+            // track_data = {};
+            server = "https://rest.ensembl.org" ;
+            ext    = "/vep/homo_sapiens/region" ;
+            $.ajax({
+                type: "post",
+                // async: false,
+                url: server+ext,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                data: JSON.stringify({ "variants" : ["21  26960070  rs116645811 G A . . .", "21  26965148  rs1135638 G A . . ." ] }),
+                timeout: 8000,
+                success: function (received_data) {
+                    console.log(received_data);
+                    vep =received_data;
+                    // show_vep_data(received_data,tag);
+                    // show_hex_mas_data(received_data,tag);
+                },
+                error: function () {
+                    alert("requesting to server is failed ....");
+                },
+                beforeSend: function(){
+                    loading(true);
+                },
+                complete: function(){
+                    loading(false);
+                }
+                
+            });
+        }
 
+
+
+        function show_track_data(track_data) {
+            // $("#track_img").attr('src', 'data:image/png;base64,' + track_data['base64']);
+            // track_data = track_data;
+            // console.log(track_data)
+            for(var i=0; i<track_data.length; i++) {
+                nt_info = track_data[i]['chrN']+':'+track_data[i]['pos']+" "+track_data[i]['ref'] + ">"+ track_data[i]['alt'] ;
+                
+                splice_info = 
+                "GeneName : "+track_data[i]['geneName']+'<br>'+ 
+                "score : "+"AG :"+track_data[i]['score']['AG']+"  AL :"+track_data[i]['score']['AL']+"  DG :"+track_data[i]['score']['DG']+"  DL: "+track_data[i]['score']['DL']+'<br> '+
+                "Relpos : "+"AG :"+track_data[i]['relPos']['AG']+"  AL :"+track_data[i]['relPos']['AL']+"  DG :"+track_data[i]['relPos']['DG']+"  DL: "+track_data[i]['relPos']['DL']+'\n' ;
+                
+                $("#splice") .append("<li id='"+i+"nt' class='list-group-item'><span id='"+i+"nt_info'>"+nt_info+"</span></li>");
+                $("#"+i+"nt").append("<button type='button' class='btn btn-success btn-sm max_scan' >Maxent_Scan</button>");
+                $("#"+i+"nt").append("<button type='button' class='btn btn-primary btn-sm vep' >VEP</button>");
+                $("#"+i+"nt").append("<button type='button' class='btn btn-danger btn-sm ucsc' >Go to UCSC</button>");
+                // $("#"+i+"nt").append("<button id='"+i+"cp' class='copy_nt' type='button' class='btn btn-default ' ><span class='glyphicon glyphicon-paperclip' aria-hidden='true'></span></button>");
+                // $("#"+i+"cp").click(function(){copy(i+"nt") });
+                $("#splice") .append("<li class='list-group-item'>"+splice_info+"</li>");
+            };
+            // $('.copy_nt').click()
+            $(".max_scan").on("click",function(event){
+                var btn_str = $(event.target).text();
+                var nt_str  = $(event.target).parent().find("span").text();
+                get_mas_hex_data(nt_str,event.target);
+            });
+            $(".vep").on("click",function(event){
+                var btn_str = $(event.target).text();
+                var nt_str  = $(event.target).parent().find("span").text();
+                get_vep_data(nt_str,event.target);
+            });
+            $(".ucsc").on("click",function(event){
+                var btn_str = $(event.target).text();
+                var nt_str  = $(event.target).parent().find("span").text();
+                console.log(nt_str);
+                position = nt_str.split(' ')[0];
+                console.log(position)
+                window.open('https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&lastVirtModeType=default&lastVirtModeExtraState=&virtModeType=default&virtMode=0&nonVirtPosition=&position='+position,"ucsc")
+                // get_mas_hex_data(nt_str,event.target);
+            });
+            
+        }
         function show_hex_mas_data(hex_mas,tag){
             for(var i=0;i < hex_mas['count'] ;i++){
 
@@ -282,33 +362,28 @@
             
             
         }
-        function show_track_data(track_data) {
-            // $("#track_img").attr('src', 'data:image/png;base64,' + track_data['base64']);
-            // track_data = track_data;
-            // console.log(track_data)
-            for(var i=0; i<track_data.length; i++) {
-                nt_info = track_data[i]['chrN']+':'+track_data[i]['pos']+" "+track_data[i]['ref'] + ">"+ track_data[i]['alt'] ;
-                
-                splice_info = 
-                "GeneName : "+track_data[i]['geneName']+'<br>'+ 
-                "score : "+"AG :"+track_data[i]['score']['AG']+"  AL :"+track_data[i]['score']['AL']+"  DG :"+track_data[i]['score']['DG']+"  DL: "+track_data[i]['score']['DL']+'<br> '+
-                "Relpos : "+"AG :"+track_data[i]['relPos']['AG']+"  AL :"+track_data[i]['relPos']['AL']+"  DG :"+track_data[i]['relPos']['DG']+"  DL: "+track_data[i]['relPos']['DL']+'\n' ;
-                
-                $("#splice") .append("<li id='"+i+"nt' class='list-group-item'><span id='"+i+"nt_info'>"+nt_info+"</span></li>");
-                $("#"+i+"nt").append("<button type='button' class='btn btn-success btn-sm max_scan' >Maxent_Scan</button>");
-                // $("#"+i+"nt").append("<button id='"+i+"cp' class='copy_nt' type='button' class='btn btn-default ' ><span class='glyphicon glyphicon-paperclip' aria-hidden='true'></span></button>");
-                // $("#"+i+"cp").click(function(){copy(i+"nt") });
-                $("#splice") .append("<li class='list-group-item'>"+splice_info+"</li>");
-            };
-            // $('.copy_nt').click()
-            $(".max_scan").on("click",function(event){
-                var btn_str = $(event.target).text();
-                var nt_str  = $(event.target).parent().find("span").text();
-                get_mas_hex_data(nt_str,event.target);
-            });
-            
+        function show_vep_data(vep,tag){
+            show_data(vap,tag);
         }
+        // $emsp;
+        function show_data(data,tag){
+            // []
+            var data_str;
+            if data instanceof Array{
+                for (let i = 0; i < array.length; i++) {
+                    
+                    data[i];
+                    
+                }
+            } // true
+            // {}
+            if data instanceof Object{
 
+            }
+            // string ,int
+            return data 
+
+        }
 
 
         function jsonProcessor(jdata) {
