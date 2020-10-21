@@ -297,7 +297,25 @@
                 $("#" + i + "nt").append("<button type='button' class='btn btn-danger btn-sm ucsc' >Go to UCSC</button>");
                 $("#" + i + "nt").append("<button type='button' class='btn btn-warning btn-sm gene' value="+track_data[i]['geneName']+">About Gene</button>");
                 // splice_info table
-
+                var score  = track_data[i]['score'];
+                var relPos = track_data[i]['relPos'];
+                $('#splice').append("<li class='list-group-item' id='" + i + "spli'></li>");
+                $("#" + i + "spli").html(' <table id="' + i + 'sptab" class="table table-striped table-bordered" style="width:100%"> \
+                            <thead>\
+                                <tr>\
+                                    <th></th>\
+                                    <th>AG</th>\
+                                    <th>AL</th>\
+                                    <th>DG</th>\
+                                    <th>DL</th>\
+                                </tr>\
+                            </thead>\
+                            <tbody> \
+                                <tr><td>Score</td><td>'+score['AG']+'</td><td>'+score['AL']+'</td><td>'+score['DG']+'</td><td>'+score['DL']+'</td></tr>\
+                                <tr><td>Relpos</td><td>'+relPos['AG']+'</td><td>'+relPos['AL']+'</td><td>'+relPos['DG']+'</td><td>'+relPos['DL']+'</td></tr>\
+                            </tbody> \
+                            </table> \
+                    ');
                 // splice info
                 $("#splice").append("<li class='list-group-item'>" + splice_info + "</li>");
                 // copy function
@@ -337,6 +355,11 @@
 
         }
         function show_hex_mas_data(hex_mas, tag) {
+            if (hex_mas['count']==0){
+                lnc="This is in Long non coding(lnc) area";
+                $(tag).parent().append("<li class='list-group-item'>" +lnc  + "</li>");
+                return -1;
+            }
             for (var i = 0; i < hex_mas['count']; i++) {
 
                 nt_info = hex_mas[i]['transName'] + ' ' + hex_mas[i]['strand'] + '  :' + hex_mas[i]['type'] + '\n';
