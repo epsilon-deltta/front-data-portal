@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="./css/clipboard.css" />
 </head>
 
-<body>
+<body style="background-color: ;">
     <!-- javascript -->
     <script src="./js/loading.js"></script>
     <script src="./test_deploy.js"></script>
@@ -68,7 +68,7 @@
                     <li><a onclick="openWindow()">Guide</a></li>
                 </ul>
             </div>
-            <button type="button" class="btn btn-info" onclick="cleanInput()">Clean</button>
+            <button style="background-color: ;" type="button" class="btn btn-info" onclick="cleanInput();clean_list()">Clean</button>
         </span>
     </div>
 
@@ -143,7 +143,7 @@
             <div>G</div>
             <div>N</div>
             <div>I</div>
-            <div>D</div>
+            <div >D</div>
             <div>A</div>
             <div>O</div>
             <div>L</div>
@@ -244,6 +244,34 @@
         function get_vep_data(seq, tag) {
             // $("#splice").empty();
             // track_data = {};
+            $.ajax({
+                type: "post",
+                // async: false,
+                url: "http://" +server_ip + ":"+vep_port ,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                data: JSON.stringify({ "seq": seq }),
+                timeout: 8000,
+                success: function (received_data) {
+                    show_vep_data(received_data,tag);
+                    // show_vep_data(received_data,tag);
+                    // show_hex_mas_data(received_data,tag);
+                },
+                error: function () {
+                    alert("requesting to server is failed ....");
+                },
+                beforeSend: function () {
+                    loading(true);
+                },
+                complete: function () {
+                    loading(false);
+                }
+
+            });
+        }
+        function get_vep_data_ensemble(seq, tag) {
+            // $("#splice").empty();
+            // track_data = {};
             server = "https://rest.ensembl.org";
             ext = "/vep/homo_sapiens/region";
             $.ajax({
@@ -255,8 +283,7 @@
                 data: JSON.stringify({ "variants": ["21  26960070  rs116645811 G A . . .", "21  26965148  rs1135638 G A . . ."] }),
                 timeout: 8000,
                 success: function (received_data) {
-                    console.log(received_data);
-                    vep = received_data;
+                    show_vep_data(received_data,tag);
                     // show_vep_data(received_data,tag);
                     // show_hex_mas_data(received_data,tag);
                 },
@@ -323,9 +350,10 @@
                 // $("#"+i+"cp").click(function(){copy(i+"nt") });
             };
             // $('.copy_nt').click()
+            // event.target :button $(event.target).parent() : 
             $(".max_scan").on("click", function (event) {
                 var btn_str = $(event.target).text();
-                var nt_str = $(event.target).parent().find("span").text();
+                var nt_str  = $(event.target).parent().find("span").text();
                 get_mas_hex_data(nt_str, event.target);
             });
             $(".vep").on("click", function (event) {
@@ -356,7 +384,7 @@
         }
         function show_hex_mas_data(hex_mas, tag) {
             if (hex_mas['count']==0){
-                lnc="This is in Long non coding(lnc) area";
+                lnc="It only has Long non coding(lnc) annotation";
                 $(tag).parent().append("<li class='list-group-item'>" +lnc  + "</li>");
                 return -1;
             }
@@ -403,8 +431,80 @@
 
 
         }
+// # output [{ ... } , { ... }]
+// # ex_output [
+//     {
+//         "Uploaded_variation": "11_108236168_A/C",
+//         "Location": "11:108236168",
+//         "Allele": "C",
+//         "Gene": "ENSG00000149311",
+//         "Feature": "ENST00000278616",
+//         "Feature_type": "Transcript",
+//         "Consequence": "intron_variant",
+//         "cDNA_position": "-",
+//         "CDS_position": "-",
+//         "Protein_position": "-",
+//         "Amino_acids": "-",
+//         "Codons": "-",
+//         "Existing_variation": "-",
+//         "Extra": {
+//             "IMPACT": "MODIFIER",
+//             "STRAND": "1",
+//             "VARIANT_CLASS": "SNV",
+//             "SYMBOL": "ATM",
+//             "SYMBOL_SOURCE": "HGNC",
+//             "HGNC_ID": "HGNC:795",
+//             "BIOTYPE": "protein_coding",
+//             "CANONICAL": "YES",
+//             "TSL": "5",
+//             "APPRIS": "P1",
+//             "CCDS": "CCDS31669.1",
+//             "ENSP": "ENSP00000278616",
+//             "SWISSPROT": "Q13315",
+//             "TREMBL": "A0A024R3C7",
+//             "UNIPARC": "UPI000016B511",
+//             "GENE_PHENO": "1",
+//             "INTRON": "5/6"
+//         }
+//     },
         function show_vep_data(vep, tag) {
-            show_data(vap, tag);
+            var var_total='';
+            for(var i =0;i<vep.length;i++){
+                var var_info ='<div style="overflow:auto; background-color:lightblue"> \
+                            <table   class="table" id="' + i + 'veptab" class="table table-striped table-bordered" style="width:100%"> \
+                            <thead>\
+                                <tr>\
+                                    <th>Gene</th>\
+                                    <th>Feature</th>\
+                                    <th>Feature_Type</th>\
+                                    <th>Consequence</th>\
+                                    <th>cDNA</th>\
+                                    <th>CDS_position</th>\
+                                    <th>Protein_Position</th>\
+                                    <th>Amino_Acid</th>\
+                                    <th>Codons</th>\
+                                    <th>Existing_variation</th>\
+                                </tr>\
+                            </thead>\
+                            <tbody> \
+                                <tr><td>'+vep[i]['Gene']+'</td><td>'+vep[i]['Feature']+'</td><td>'+vep[i]['Feature_type']+'</td><td>'+vep[i]['Consequence']+'</td><td>'+vep[i]['cDNA_position']+'</td><td>'+vep[i]['CDS_position']+'</td><td>'+vep[i]['Protein_position']+'</td><td>'+vep[i]['Amino_acids']+'</td><td>'+vep[i]['Codons']+'</td><td>'+vep[i]['Existing_variation']+'</td></tr>\
+                            </tbody> \
+                            </table> \
+                            </div> \
+                            ';
+                var extra = vep[i]['Extra'];
+                var var_extra = '';
+                for (var item of Object.keys(extra) ){
+                    console.log(item);
+                    var_extra = var_extra + item+" : "+extra[item]+"<br>" ;
+                }
+                
+                var_info   = var_info + var_extra;
+                var_total += var_info;
+            }
+            
+            // var_total = var_info;       
+            $(tag).parent().append("<li style='background-color:' class='list-group-item'>"+ var_total + "</li>");
         }
         // $emsp;
         // function show_data(data,tag){
@@ -467,6 +567,9 @@
             document.execCommand('Copy');
 
         }
+        function clean_list(){
+            $('#splice').empty();
+        }
         // setTimeout(function () {|
         //     chart.unload({
         //         ids: 'data1'
@@ -477,6 +580,7 @@
         // }, 2500);
 
     </script>
+    <!-- <div style="background-color: powderblue;"></div> -->
     <script>
 
 
